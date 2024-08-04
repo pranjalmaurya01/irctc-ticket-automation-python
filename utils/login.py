@@ -2,6 +2,7 @@ import os
 import sys
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -10,7 +11,7 @@ from .captcha import extract_solve_captcha
 RETRIES = 3
 
 
-def login(driver):
+def login(driver: WebDriver):
     print("attempting login")
 
     USER_NAME = os.getenv('USER_NAME')
@@ -38,7 +39,7 @@ def login(driver):
     input_user_pass.click()
     input_user_pass.send_keys(USER_PASSWORD)
 
-    for _ in range(RETRIES):
+    for i in range(RETRIES):
         extract_solve_captcha(driver)
 
         try:
@@ -46,11 +47,21 @@ def login(driver):
                 By.CSS_SELECTOR, '.loginError')
             if len(login_err.text):
                 print(login_err.text)
-                # elif login_err.text == 'Bad credentials':
-                # sys.exit()
+                if login_err.text == 'Bad credentials':
+                    print("INVALID CREDENTIALS")
+                    sys.exit()
             else:
                 break
         except Exception:
-            pass
+            if i+1 == RETRIES:
+                print("UNABLE TO SOLVE CAPTCHA")
+                sys.exit()
 
+    try:
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '.text-center.pull-left.upcoming-heading'))
+        )
+    except:
+        pass
     print("login success")

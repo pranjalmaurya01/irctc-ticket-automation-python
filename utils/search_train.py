@@ -57,7 +57,12 @@ def search_train(driver: WebDriver):
 
     # SUBMIT ENTIRE FORM
     input_doj.send_keys(Keys.ENTER)
-
+    try:
+        submit_btn = driver.find_element(
+            By.CSS_SELECTOR, "button[label='Find Trains'].search_btn.train_Search")
+        submit_btn.click()
+    except:
+        pass
     # checking if navigation was complete "MODIFY SEARCH BUTTON"
     try:
         WebDriverWait(driver, 10).until(
@@ -104,7 +109,6 @@ def search_train(driver: WebDriver):
                 book_now_btn = train.find_element(
                     By.CSS_SELECTOR, '.btnDefault.train_Search.ng-star-inserted')
                 book_now_btn.click()
-                time.sleep(20)
             except Exception as e:
                 print("NO TICKETS AVAILABLE", e)
                 sys.exit()
