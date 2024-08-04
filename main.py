@@ -11,7 +11,7 @@ def main():
     load_dotenv()
     driver = get_driver()
     driver.get('https://www.irctc.co.in/nget/train-search')
-    # login(driver)
+    login(driver)
     search_train(driver)
     time.sleep(10)
 

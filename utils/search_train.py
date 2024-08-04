@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 def search_train(driver: WebDriver):
     SRC = os.getenv('SOURCE_STATION')
     DEST = os.getenv('DESTINATION_STATION')
-    IS_TATKAL = os.getenv('IS_TATKAL')
+    IS_TATKAL = os.getenv('IS_TATKAL') == 1
     TRAVEL_DATE = os.getenv('TRAVEL_DATE')
     TRAIN_NUMBER = os.getenv('TRAIN_NUMBER')
     TRAIN_CLASS = os.getenv('TRAIN_CLASS')
@@ -43,10 +43,11 @@ def search_train(driver: WebDriver):
     time.sleep(.5)
     input_dest.send_keys(Keys.ENTER)
 
-    input_tatkal = driver.find_element(
-        By.CSS_SELECTOR, '#journeyQuota')
-    input_tatkal.click()
-    ActionChains(driver).send_keys("T").send_keys(Keys.ENTER).perform()
+    if IS_TATKAL:
+        input_tatkal = driver.find_element(
+            By.CSS_SELECTOR, '#journeyQuota')
+        input_tatkal.click()
+        ActionChains(driver).send_keys("T").send_keys(Keys.ENTER).perform()
 
     input_doj = driver.find_element(
         By.CSS_SELECTOR, '#jDate > span > input')
@@ -77,19 +78,35 @@ def search_train(driver: WebDriver):
                 By.CSS_SELECTOR, 'table td')
             for c in classes:
                 if TRAIN_CLASS in c.text:
-                    print("found class ", c.text)
+                    # print("found class ", c.text)
                     class_div = c.find_element(
                         By.CSS_SELECTOR, 'div')
                     class_div.click()
-                    time.sleep(1)
-                    class_div = c.find_element(
-                        By.CSS_SELECTOR, 'div.AVAILABLE')
-                    class_div.click()
-
-                    print("check if selected correct class")
                     break
+
             else:
                 print("TRAIN CLASS: NOT FOUND")
+                sys.exit()
+
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located(
+                        (By.CSS_SELECTOR, 'table td div.AVAILABLE'))
+                )
+                available = train.find_element(
+                    By.CSS_SELECTOR, 'table td div.AVAILABLE')
+                print(available.text)
+                available.click()
+                prices = train.find_elements(
+                    By.CSS_SELECTOR, 'strong')
+                print(prices[-1].text)
+
+                book_now_btn = train.find_element(
+                    By.CSS_SELECTOR, '.btnDefault.train_Search.ng-star-inserted')
+                book_now_btn.click()
+                time.sleep(20)
+            except Exception as e:
+                print("NO TICKETS AVAILABLE", e)
                 sys.exit()
             break
     else:
