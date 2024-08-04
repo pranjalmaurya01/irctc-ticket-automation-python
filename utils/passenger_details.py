@@ -5,6 +5,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+SCREENSHOT_REVIEW_JOURNEY = 'review_journey.png'
+
 
 def passenger_details(driver: WebDriver):
     PASSENGER_NAME = os.getenv('PASSENGER_NAME')
@@ -61,3 +63,13 @@ def passenger_details(driver: WebDriver):
         By.CSS_SELECTOR, 'button.train_Search.btnDefault')
 
     btn_passenger_det_submit.click()
+
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located(
+            (By.CSS_SELECTOR, '#captcha'))
+    )
+
+    driver.save_screenshot(SCREENSHOT_REVIEW_JOURNEY)
+
+    print("Passenger Details Complete, saved screenshot to ",
+          SCREENSHOT_REVIEW_JOURNEY)

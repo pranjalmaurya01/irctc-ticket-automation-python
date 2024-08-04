@@ -15,7 +15,8 @@ def main():
     login(driver)
     search_train(driver)
     passenger_details(driver)
-    time.sleep(30)
+
+    time.sleep(120)
 
     print("closing browser")
     driver.quit()
