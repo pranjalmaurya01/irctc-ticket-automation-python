@@ -19,7 +19,7 @@ def extract_solve_captcha(driver):
         )
         captcha_src_base64 = captcha_img.get_attribute("src")
 
-        captcha_txt = solve_captcha(captcha_src_base64)
+        captcha_txt = solve_captcha(captcha_src_base64).replace(" ", "")
 
         input_captcha = driver.find_element(
             By.CSS_SELECTOR, 'input[formcontrolname="captcha"]')

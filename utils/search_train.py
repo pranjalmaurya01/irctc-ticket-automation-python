@@ -12,13 +12,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-def search_train(driver: WebDriver):
-    SRC = os.getenv('SOURCE_STATION')
-    DEST = os.getenv('DESTINATION_STATION')
-    IS_TATKAL = os.getenv('IS_TATKAL') == 1
-    TRAVEL_DATE = os.getenv('TRAVEL_DATE')
-    TRAIN_NUMBER = os.getenv('TRAIN_NUMBER')
-    TRAIN_CLASS = os.getenv('TRAIN_CLASS')
+def search_train(driver: WebDriver,
+                 SOURCE_STATION: str,
+                 DESTINATION_STATION: str,
+                 IS_TATKAL: str,
+                 TRAVEL_DATE: str,
+                 TRAIN_NUMBER: str,
+                 TRAIN_CLASS: str,):
+
+    SRC = SOURCE_STATION
+    DEST = DESTINATION_STATION
+    IS_TATKAL = IS_TATKAL == 1
 
     if IS_TATKAL:
         india_timezone = pytz.timezone('Asia/Kolkata')
@@ -115,5 +119,6 @@ def search_train(driver: WebDriver):
             break
     else:
         print("TRAIN NUMBER: NOT FOUND")
+        sys.exit()
 
     print("end searching train")

@@ -8,12 +8,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 SCREENSHOT_REVIEW_JOURNEY = 'review_journey.png'
 
 
-def passenger_details(driver: WebDriver):
-    PASSENGER_NAME = os.getenv('PASSENGER_NAME')
-    PASSENGER_AGE = os.getenv('PASSENGER_AGE')
-    PASSENGER_GENDER = os.getenv('PASSENGER_GENDER')
-    PASSENGER_BERTH_CHOICE = os.getenv('PASSENGER_BERTH_CHOICE')
-    PASSENGER_MOB_NO = os.getenv('PASSENGER_MOB_NO')
+def passenger_details(driver: WebDriver,
+                      PASSENGER_NAME: str,
+                      PASSENGER_AGE: int,
+                      PASSENGER_GENDER: str,
+                      PASSENGER_BERTH_CHOICE: str,
+                      PASSENGER_MOB_NO: int,
+                      ):
 
     print("start filling in passenger details",
           PASSENGER_NAME, PASSENGER_AGE, PASSENGER_GENDER, PASSENGER_BERTH_CHOICE, PASSENGER_MOB_NO)

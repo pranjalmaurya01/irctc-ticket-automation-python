@@ -1,0 +1,265 @@
+<form action="{{url_for('book_ticket')}}" class="my-8">
+  <div class="grid grid-cols-2 gap-6 mb-6">
+    <input
+      required
+      type="text"
+      name="USER_NAME"
+      placeholder="USER_NAME"
+      class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+    />
+    <input
+      required
+      type="text"
+      name="USER_PASSWORD"
+      placeholder="USER_PASSWORD"
+      class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+    />
+
+    <div>
+      <div class="relative mt-1.5">
+        <input
+          required
+          name="SOURCE_STATION"
+          type="text"
+          list="SOURCE_STATION"
+          class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
+          placeholder="SOURCE_STATION"
+        />
+
+        <span class="absolute inset-y-0 end-0 flex w-8 items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5 text-gray-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <datalist name="SOURCE_STATION" id="SOURCE_STATION">
+        {% for s in stations %}
+        <option value="{{ s.sc }}">{{ s.sc }}</option>
+        {% endfor %}
+      </datalist>
+    </div>
+
+    <div>
+      <div class="relative mt-1.5">
+        <input
+          required
+          type="text"
+          name="DESTINATION_STATION"
+          list="DESTINATION_STATION"
+          class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
+          placeholder="DESTINATION_STATION"
+        />
+
+        <span class="absolute inset-y-0 end-0 flex w-8 items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5 text-gray-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <datalist name="DESTINATION_STATION" id="DESTINATION_STATION">
+        {% for s in stations %}
+        <option value="{{ s.sc }}">{{ s.sc }}</option>
+        {% endfor %}
+      </datalist>
+    </div>
+
+    <fieldset name="IS_TATKAL">
+      <legend class="sr-only">Checkboxes</legend>
+
+      <div class="space-y-2">
+        <label for="IS_TATKAL" class="flex cursor-pointer items-start gap-4">
+          <div class="flex items-center">
+            &#8203;
+            <input
+              type="checkbox"
+              class="size-4 rounded border-gray-300"
+              name="IS_TATKAL"
+              id="IS_TATKAL"
+            />
+          </div>
+          <div>
+            <strong class="font-medium text-gray-900"> IS_TATKAL </strong>
+          </div>
+        </label>
+      </div>
+    </fieldset>
+
+    <input
+      required
+      type="date"
+      name="TRAVEL_DATE"
+      placeholder="TRAVEL_DATE"
+      class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+    />
+
+    <input
+      required
+      type="number"
+      name="TRAIN_NUMBER"
+      placeholder="TRAIN_NUMBER"
+      class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+    />
+
+    <div>
+      <div class="relative mt-1.5">
+        <input
+          required
+          type="text"
+          name="TRAIN_CLASS"
+          list="TRAIN_CLASS"
+          class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
+          placeholder="TRAIN_CLASS"
+        />
+
+        <span class="absolute inset-y-0 end-0 flex w-8 items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5 text-gray-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <datalist name="TRAIN_CLASS" id="TRAIN_CLASS">
+        {% for tc in train_class %}
+        <option value="{{ tc }}">{{ tc }}</option>
+        {% endfor %}
+      </datalist>
+    </div>
+
+    <input
+      required
+      type="text"
+      name="PASSENGER_NAME"
+      placeholder="PASSENGER_NAME"
+      class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+    />
+
+    <input
+      required
+      type="number"
+      name="PASSENGER_AGE"
+      placeholder="PASSENGER_AGE"
+      class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+    />
+
+    <div>
+      <div class="relative mt-1.5">
+        <input
+          required
+          type="text"
+          name="PASSENGER_GENDER"
+          list="PASSENGER_GENDER"
+          class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
+          placeholder="PASSENGER_GENDER"
+        />
+
+        <span class="absolute inset-y-0 end-0 flex w-8 items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5 text-gray-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <datalist name="PASSENGER_GENDER" id="PASSENGER_GENDER">
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+      </datalist>
+    </div>
+
+    <div>
+      <div class="relative mt-1.5">
+        <input
+          required
+          type="text"
+          name="PASSENGER_BERTH_CHOICE"
+          list="PASSENGER_BERTH_CHOICE"
+          class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
+          placeholder="PASSENGER_BERTH_CHOICE"
+        />
+
+        <span class="absolute inset-y-0 end-0 flex w-8 items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-5 text-gray-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <datalist name="PASSENGER_BERTH_CHOICE" id="PASSENGER_BERTH_CHOICE">
+        <option value="L">Lower</option>
+        <option value="M">Middle</option>
+        <option value="U">Upper</option>
+      </datalist>
+    </div>
+
+    <input
+      required
+      type="number"
+      name="PASSENGER_MOB_NO"
+      placeholder="PASSENGER_MOB_NO"
+      class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+    />
+  </div>
+  <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
+    <button
+      class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+    >
+      Book Ticket
+    </button>
+  </div>
+</form>

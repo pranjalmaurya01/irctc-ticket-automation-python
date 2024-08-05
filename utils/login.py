@@ -11,11 +11,8 @@ from .captcha import extract_solve_captcha
 RETRIES = 3
 
 
-def login(driver: WebDriver):
+def login(driver: WebDriver, USER_NAME: str, USER_PASSWORD: str):
     print("attempting login")
-
-    USER_NAME = os.getenv('USER_NAME')
-    USER_PASSWORD = os.getenv('USER_PASSWORD')
 
     try:
         login_btn = WebDriverWait(driver, 10).until(
@@ -47,20 +44,19 @@ def login(driver: WebDriver):
                 By.CSS_SELECTOR, '.loginError')
             if len(login_err.text):
                 print(login_err.text)
-                if login_err.text == 'Bad credentials':
-                    print("INVALID CREDENTIALS")
-                    sys.exit()
+                if login_err.text != 'Invalid Captcha....':
+                    driver.quit()
             else:
                 break
         except Exception:
             if i+1 == RETRIES:
                 print("UNABLE TO SOLVE CAPTCHA")
-                sys.exit()
+                driver.quit()
 
     try:
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '.text-center.pull-left.upcoming-heading'))
+                (By.CSS_SELECTOR, 'a[href="/nget/logout"]'))
         )
     except:
         pass
