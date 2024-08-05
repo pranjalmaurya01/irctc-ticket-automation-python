@@ -3,3 +3,4 @@ __pycache__
 env
 review_journey.png
 node_modules
+db.*
