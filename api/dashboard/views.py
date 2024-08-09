@@ -7,6 +7,8 @@ from api.config import redis_main_db as rm_db
 from api.config import templates
 from api.dependency import cookie_dependency
 from api.utils import get_redis_user_key
+from irctc.driver import get_driver
+from irctc.login import login
 
 from .constants import station, train_class
 
@@ -60,6 +62,21 @@ def save_settings(request: Request,
 
     tmp_d['username'] = user['username']
 
-    print(tmp_d)
-
     return templates.TemplateResponse("dashboard/user_details_form.html", {'request': request,  'username': user['username'], 'user': tmp_d, "stations": station.STATIONS, 'train_class': train_class.train_class, 'saved': True})
+
+
+@router.post('/book_ticket', name='book_ticket')
+def book_ticket(request: Request, user=Depends(cookie_dependency)):
+    driver = get_driver()
+    try:
+        driver.get('https://www.irctc.co.in/nget/train-search')
+
+        try:
+            login(driver, user['username'], user['USER_PASSWORD'])
+        except SystemError as e:
+            print(e)
+
+    finally:
+        driver.quit()
+
+    return

@@ -282,13 +282,21 @@
       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
     />
   </div>
-  <div class="flex justify-center mt-5">
+  <div class="flex justify-center mt-10">
     <button
-      class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+      class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-2 text-xl font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
     >
       Save
     </button>
   </div>
 </form>
+<div class="flex justify-center">
+  <button
+    hx-post="{{url_for('book_ticket')}}"
+    class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-2 text-xl font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+  >
+    Book Now
+  </button>
+</div>
 
 {% endblock %}
