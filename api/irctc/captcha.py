@@ -19,17 +19,12 @@ def extract_solve_captcha(driver):
         )
         captcha_src_base64 = captcha_img.get_attribute("src")
 
-        captcha_txt = solve_captcha(captcha_src_base64)
+        captcha_txt = solve_captcha(captcha_src_base64).replace(" ", "")
 
         input_captcha = driver.find_element(
             By.CSS_SELECTOR, 'input[formcontrolname="captcha"]')
         input_captcha.click()
         input_captcha.send_keys(captcha_txt)
-
-        time.sleep(1)
-        submit_btn = driver.find_element(
-            By.CSS_SELECTOR, 'div.modal-body > form > span > button')
-        submit_btn.click()
 
     except Exception as e:
         print("CAPTCHA TIMEOUT :", e)

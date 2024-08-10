@@ -1,4 +1,8 @@
+redis_data
 .env
 __pycache__
 env
 review_journey.png
+node_modules
+db.*
+/*/*.log

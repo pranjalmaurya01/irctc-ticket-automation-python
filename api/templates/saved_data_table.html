@@ -1,0 +1,89 @@
+{% include "base.html" %}
+<div class="overflow-x-auto">
+  <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+    <thead class="ltr:text-left rtl:text-right">
+      <tr>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          USER_NAME
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          USER_PASSWORD
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          SOURCE_STATION
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          DESTINATION_STATION
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          TRAVEL_DATE
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          TRAIN_NUMBER
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          TRAIN_CLASS
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          PASSENGER_NAME
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          PASSENGER_AGE
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          PASSENGER_GENDER
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          PASSENGER_BERTH_CHOICE
+        </th>
+        <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          PASSENGER_MOB_NO
+        </th>
+      </tr>
+    </thead>
+
+    <tbody class="divide-y divide-gray-200">
+      {% for d in loaded_data %}
+      <tr>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.USER_NAME}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.USER_PASSWORD}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.SOURCE_STATION}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.DESTINATION_STATION}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.TRAVEL_DATE}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.TRAIN_NUMBER}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.TRAIN_CLASS}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.PASSENGER_NAME}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.PASSENGER_AGE}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.PASSENGER_GENDER}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.PASSENGER_BERTH_CHOICE}}
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+          {{d.PASSENGER_MOB_NO}}
+        </td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
