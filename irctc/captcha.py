@@ -26,11 +26,6 @@ def extract_solve_captcha(driver):
         input_captcha.click()
         input_captcha.send_keys(captcha_txt)
 
-        time.sleep(1)
-        submit_btn = driver.find_element(
-            By.CSS_SELECTOR, 'div.modal-body > form > span > button')
-        submit_btn.click()
-
     except Exception as e:
         print("CAPTCHA TIMEOUT :", e)
 

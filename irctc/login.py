@@ -1,4 +1,3 @@
-import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -32,6 +31,8 @@ def login(driver: WebDriver, USER_NAME: str, USER_PASSWORD: str):
             By.CSS_SELECTOR, 'input[formcontrolname="userid"]')
         input_user_pass = driver.find_element(
             By.CSS_SELECTOR, 'input[formcontrolname="password"]')
+        submit_btn = driver.find_element(
+            By.CSS_SELECTOR, 'div.modal-body > form > span > button')
     except Exception as e:
         print("LOGIN %s", e)
         raise SystemError("NOT-FOUND: username & password") from e
@@ -41,23 +42,33 @@ def login(driver: WebDriver, USER_NAME: str, USER_PASSWORD: str):
 
     for i in range(RETRIES):
         extract_solve_captcha(driver)
-        # TODO: wait for response of backend before checking (.loginError).text
-        time.sleep(.1)
+        submit_btn.click()
+
+        try:
+            WebDriverWait(driver, 10).until(
+                EC.invisibility_of_element_located(
+                    (By.CSS_SELECTOR, '#preloaderP'))
+            )
+        except Exception as e:
+            raise SystemError("TIMEOUT: LOGIN REQUEST") from e
+
         try:
             login_err = driver.find_element(
                 By.CSS_SELECTOR, '.loginError')
+        except Exception:
+            print("login success for %s", USER_NAME)
+            break
 
-            print("login error text", login_err.text)
-            if len(login_err.text):
-                print("LOGIN ERROR MSG: %s, %s", USER_NAME, login_err.text)
-                if login_err.text != 'Invalid Captcha....':
-                    raise SystemError(login_err.text) from e
-            else:
-                print("login success for %s", USER_NAME)
-                break
-        except Exception as e:
+        print("login error text", login_err.text)
+        if len(login_err.text):
+            print("LOGIN ERROR MSG: %s, %s", USER_NAME, login_err.text)
+            if login_err.text != 'Invalid Captcha....':
+                raise SystemError(login_err.text)
             if i+1 == RETRIES:
-                raise SystemError("UNABLE TO SOLVE CAPTCHA") from e
+                raise SystemError(f"RETRIES EXHAUSTED FOR {USER_NAME}")
+        else:
+            print("login success for %s", USER_NAME)
+            break
 
     try:
         WebDriverWait(driver, 10).until(
