@@ -35,7 +35,7 @@ def login(driver: WebDriver, USER_NAME: str, USER_PASSWORD: str):
             By.CSS_SELECTOR, 'div.modal-body > form > span > button')
     except Exception as e:
         print("LOGIN %s", e)
-        raise SystemError("NOT-FOUND: username & password") from e
+        raise SystemError("NOT-FOUND: username | password | submit btn") from e
 
     input_user_id.send_keys(USER_NAME)
     input_user_pass.send_keys(USER_PASSWORD)

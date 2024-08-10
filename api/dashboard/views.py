@@ -6,9 +6,10 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response
 from api.config import redis_main_db as rm_db
 from api.config import templates
 from api.dependency import cookie_dependency
+from api.irctc.driver import get_driver
+from api.irctc.login import login
+from api.irctc.search_train import search_train
 from api.utils import get_redis_user_key
-from irctc.driver import get_driver
-from irctc.login import login
 
 from .constants import station, train_class
 
@@ -68,15 +69,24 @@ def save_settings(request: Request,
 @router.post('/book_ticket', name='book_ticket')
 def book_ticket(request: Request, user=Depends(cookie_dependency)):
     driver = get_driver()
+    err = ''
     try:
         driver.get('https://www.irctc.co.in/nget/train-search')
 
         try:
-            login(driver, user['username'], user['USER_PASSWORD'])
+            # login(driver, user['username'], user['USER_PASSWORD'])
+            search_train(driver,
+                         user['SOURCE_STATION'],
+                         user['DESTINATION_STATION'],
+                         user['IS_TATKAL'],
+                         user['TRAVEL_DATE'],
+                         user['TRAIN_NUMBER'],
+                         user['TRAIN_CLASS']
+                         )
         except SystemError as e:
-            print(e)
+            err = str(e)
 
     finally:
         driver.quit()
 
-    return
+    return err
