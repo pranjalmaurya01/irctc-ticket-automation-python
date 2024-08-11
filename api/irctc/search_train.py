@@ -164,7 +164,6 @@ def search_train(driver: WebDriver,
     except Exception:
         pass
     if err:
-        print(err)
         raise SystemError(err)
 
     try:

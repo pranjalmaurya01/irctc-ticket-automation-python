@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response
 
 from api.config import redis_main_db as rm_db
 from api.config import templates
+from api.constants import SCREENSHOT_PATH
 from api.dependency import cookie_dependency
 from api.irctc.driver import get_driver
 from api.irctc.login import login
@@ -89,6 +90,7 @@ def book_ticket(request: Request, user=Depends(cookie_dependency)):
             err = str(e)
 
     finally:
+        driver.save_screenshot(f'{SCREENSHOT_PATH}/quit.png')
         driver.quit()
 
     return err

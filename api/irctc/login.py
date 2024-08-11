@@ -1,4 +1,6 @@
 
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -52,6 +54,7 @@ def login(driver: WebDriver, USER_NAME: str, USER_PASSWORD: str):
         except Exception as e:
             raise SystemError("TIMEOUT: LOGIN REQUEST") from e
 
+        time.sleep(1)
         try:
             login_err = driver.find_element(
                 By.CSS_SELECTOR, '.loginError')
