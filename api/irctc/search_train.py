@@ -1,5 +1,3 @@
-import base64
-import io
 import time
 from datetime import datetime, timedelta
 
@@ -45,7 +43,7 @@ def search_train(driver: WebDriver,
         input_dest = driver.find_element(
             By.CSS_SELECTOR, '#destination > span > input')
         input_tatkal = driver.find_element(
-            By.CSS_SELECTOR, '#journeyQuota')
+            By.CSS_SELECTOR, '#journeyQuota div')
         input_doj = driver.find_element(
             By.CSS_SELECTOR, '#jDate > span > input')
         submit_btn = driver.find_element(
@@ -54,18 +52,25 @@ def search_train(driver: WebDriver,
         print("LOGIN %s", e)
         raise SystemError("NOT-FOUND: source | dest | tatkal | doj") from e
 
+    actions = ActionChains(driver)
+    actions.move_to_element(submit_btn).perform()
+
     # MAIN CODE GOES HERE
     slow_type(input_source, SRC)
-    time.sleep(.5)
+    # select the first option from custom dropdown
+    for _ in range(5):
+        actions.send_keys(Keys.UP).perform()
     input_source.send_keys(Keys.ENTER)
 
     slow_type(input_dest, DEST)
-    time.sleep(.5)
+    # select the first option from custom dropdown
+    for _ in range(5):
+        actions.send_keys(Keys.UP).perform()
     input_dest.send_keys(Keys.ENTER)
 
     if IS_TATKAL:
         input_tatkal.click()
-        ActionChains(driver).send_keys("T").send_keys(Keys.ENTER).perform()
+        actions.send_keys("T").send_keys(Keys.ENTER).perform()
 
     input_doj.send_keys(Keys.CONTROL + "a")
     input_doj.send_keys(Keys.DELETE)
@@ -114,13 +119,16 @@ def search_train(driver: WebDriver,
             except Exception as e:
                 raise SystemError("TIMEOUT: Something") from e
 
+            # refresh elements
             all_trains_refreshed = driver.find_elements(
                 By.CSS_SELECTOR, '.form-group.no-pad.col-xs-12.bull-back.border-all')
             selected_train = all_trains_refreshed[count]
+            # scroll the selected train into view
             driver.execute_script(
                 "arguments[0].scrollIntoView(false);", selected_train)
             selected_train.screenshot(
                 f"{TRAIN_NUMBER}-{TRAIN_CLASS}.png")
+
             try:
                 available = selected_train.find_element(
                     By.CSS_SELECTOR, 'table td div.AVAILABLE')
@@ -139,6 +147,19 @@ def search_train(driver: WebDriver,
         count += 1
     else:
         raise SystemError("TRAIN NUMBER: NOT FOUND")
+
+    # check if any error is raised in toast
+    err = ''
+    try:
+        toast = WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '.ui-toast-detail'))
+        )
+        err = toast.text
+    except Exception:
+        pass
+    if err:
+        raise SystemError(err)
 
     try:
         # .ui-button-icon-left.ui-clickable.pi.pi-check

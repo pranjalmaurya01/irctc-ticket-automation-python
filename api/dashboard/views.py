@@ -74,7 +74,7 @@ def book_ticket(request: Request, user=Depends(cookie_dependency)):
         driver.get('https://www.irctc.co.in/nget/train-search')
 
         try:
-            # login(driver, user['username'], user['USER_PASSWORD'])
+            login(driver, user['username'], user['USER_PASSWORD'])
             search_train(driver,
                          user['SOURCE_STATION'],
                          user['DESTINATION_STATION'],
