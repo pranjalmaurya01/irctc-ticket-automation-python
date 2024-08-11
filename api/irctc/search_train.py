@@ -57,12 +57,14 @@ def search_train(driver: WebDriver,
 
     # MAIN CODE GOES HERE
     slow_type(input_source, SRC)
+    time.sleep(.2)
     # select the first option from custom dropdown
     for _ in range(5):
         actions.send_keys(Keys.UP).perform()
     input_source.send_keys(Keys.ENTER)
 
     slow_type(input_dest, DEST)
+    time.sleep(.2)
     # select the first option from custom dropdown
     for _ in range(5):
         actions.send_keys(Keys.UP).perform()
@@ -135,6 +137,7 @@ def search_train(driver: WebDriver,
                 available.click()
                 prices = train.find_elements(
                     By.CSS_SELECTOR, 'strong')
+
                 print(prices[-1].text)
 
                 book_now_btn = train.find_element(
@@ -148,6 +151,8 @@ def search_train(driver: WebDriver,
     else:
         raise SystemError("TRAIN NUMBER: NOT FOUND")
 
+    # let the toast render on screen
+    time.sleep(.5)
     # check if any error is raised in toast
     err = ''
     try:
@@ -159,6 +164,7 @@ def search_train(driver: WebDriver,
     except Exception:
         pass
     if err:
+        print(err)
         raise SystemError(err)
 
     try:
