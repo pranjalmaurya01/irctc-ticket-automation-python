@@ -5,4 +5,5 @@ env
 review_journey.png
 node_modules
 db.*
-/*/*.log
+*.log
+*.png

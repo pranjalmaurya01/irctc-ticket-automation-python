@@ -83,6 +83,8 @@ def book_ticket(request: Request, user=Depends(cookie_dependency)):
                          user['TRAIN_NUMBER'],
                          user['TRAIN_CLASS']
                          )
+            import time
+            time.sleep(10)
         except SystemError as e:
             err = str(e)
 

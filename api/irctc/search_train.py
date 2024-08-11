@@ -1,3 +1,5 @@
+import base64
+import io
 import time
 from datetime import datetime, timedelta
 
@@ -9,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from .utils import slow_type
+
+# SCREENSHOT_PATH = '/static/screenshot'
 
 
 def search_train(driver: WebDriver,
@@ -86,6 +90,7 @@ def search_train(driver: WebDriver,
     all_trains = driver.find_elements(
         By.CSS_SELECTOR, '.form-group.no-pad.col-xs-12.bull-back.border-all')
 
+    count = 0
     for train in all_trains:
         if TRAIN_NUMBER in train.text:
             classes = train.find_elements(
@@ -109,10 +114,16 @@ def search_train(driver: WebDriver,
             except Exception as e:
                 raise SystemError("TIMEOUT: Something") from e
 
+            all_trains_refreshed = driver.find_elements(
+                By.CSS_SELECTOR, '.form-group.no-pad.col-xs-12.bull-back.border-all')
+            selected_train = all_trains_refreshed[count]
+            driver.execute_script(
+                "arguments[0].scrollIntoView(false);", selected_train)
+            selected_train.screenshot(
+                f"{TRAIN_NUMBER}-{TRAIN_CLASS}.png")
             try:
-                available = c.find_element(
+                available = selected_train.find_element(
                     By.CSS_SELECTOR, 'table td div.AVAILABLE')
-                print(available.text)
                 available.click()
                 prices = train.find_elements(
                     By.CSS_SELECTOR, 'strong')
@@ -125,7 +136,17 @@ def search_train(driver: WebDriver,
                 raise SystemError(f"NO TICKETS AVAILABLE in {
                     TRAIN_NUMBER} for {TRAIN_CLASS}") from e
             break
+        count += 1
     else:
         raise SystemError("TRAIN NUMBER: NOT FOUND")
 
+    try:
+        # .ui-button-icon-left.ui-clickable.pi.pi-check
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '.hidden-xs.search_btn.btn'))
+        )
+    except Exception as e:
+        raise SystemError(f"TIMEOUT: Submit of {
+                          TRAIN_NUMBER} for {TRAIN_CLASS}") from e
     print("end searching train")
