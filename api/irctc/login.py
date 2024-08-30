@@ -39,7 +39,10 @@ def login(driver: WebDriver, USER_NAME: str, USER_PASSWORD: str):
         print("LOGIN %s", e)
         raise SystemError("NOT-FOUND: username | password | submit btn") from e
 
+    input_user_id.click()
     input_user_id.send_keys(USER_NAME)
+
+    input_user_pass.click()
     input_user_pass.send_keys(USER_PASSWORD)
 
     for i in range(RETRIES):

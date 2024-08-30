@@ -1,4 +1,3 @@
-import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -65,12 +64,22 @@ def passenger_details(driver: WebDriver,
 
     btn_passenger_det_submit.click()
 
+    try:
+        # wait for 10 seconds for loading of selected class
+        WebDriverWait(driver, 20).until(
+            EC.invisibility_of_element_located(
+                (By.CSS_SELECTOR, '#preloaderP'))
+        )
+    except Exception as e:
+        raise SystemError("TIMEOUT: Something") from e
+
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located(
             (By.CSS_SELECTOR, '#captcha'))
     )
 
-    driver.save_screenshot(SCREENSHOT_REVIEW_JOURNEY)
+    print("end of filling passenger details")
+    # driver.save_screenshot(SCREENSHOT_REVIEW_JOURNEY)
 
-    print("Passenger Details Complete, saved screenshot to ",
-          SCREENSHOT_REVIEW_JOURNEY)
+    # print("Passenger Details Complete, saved screenshot to ",
+    #   SCREENSHOT_REVIEW_JOURNEY)

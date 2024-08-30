@@ -33,6 +33,9 @@ def search_train(driver: WebDriver,
         TRAVEL_DATE = tomorrow_date_in_india.date().strftime("%d/%m/%Y")
     elif TRAVEL_DATE is None:
         raise SystemError("TRAVEL_DATE: REQUIRED")
+    else:
+        datetime_obj = datetime.strptime(TRAVEL_DATE, '%Y-%m-%d')
+        TRAVEL_DATE = datetime_obj.date().strftime("%d/%m/%Y")
 
     print("start searching train", SRC, "->", DEST,
           {'IS_TATKAL': IS_TATKAL, 'TRAVEL_DATE': TRAVEL_DATE})
@@ -156,7 +159,7 @@ def search_train(driver: WebDriver,
     # check if any error is raised in toast
     err = ''
     try:
-        toast = WebDriverWait(driver, 5).until(
+        toast = WebDriverWait(driver, 2).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '.ui-toast-detail'))
         )
@@ -167,12 +170,22 @@ def search_train(driver: WebDriver,
         raise SystemError(err)
 
     try:
-        # .ui-button-icon-left.ui-clickable.pi.pi-check
+        # wait for 10 seconds for loading of selected class
+        WebDriverWait(driver, 10).until(
+            EC.invisibility_of_element_located(
+                (By.CSS_SELECTOR, '#preloaderP'))
+        )
+    except Exception as e:
+        raise SystemError("TIMEOUT: Something") from e
+
+    # checking if we moved to review Passenger Details
+    try:
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '.hidden-xs.search_btn.btn'))
+                (By.CSS_SELECTOR, '.progress-active.progress-step'))
         )
     except Exception as e:
         raise SystemError(f"TIMEOUT: Submit of {
                           TRAIN_NUMBER} for {TRAIN_CLASS}") from e
+
     print("end searching train")

@@ -1,7 +1,7 @@
+import time
 from typing import Annotated
 
-import starlette.status as status
-from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response
+from fastapi import APIRouter, Depends, Form, Request
 
 from api.config import redis_main_db as rm_db
 from api.config import templates
@@ -9,6 +9,8 @@ from api.constants import SCREENSHOT_PATH
 from api.dependency import cookie_dependency
 from api.irctc.driver import get_driver
 from api.irctc.login import login
+from api.irctc.passenger_details import passenger_details
+from api.irctc.review_journey import review_journey
 from api.irctc.search_train import search_train
 from api.utils import get_redis_user_key
 
@@ -84,8 +86,15 @@ def book_ticket(request: Request, user=Depends(cookie_dependency)):
                          user['TRAIN_NUMBER'],
                          user['TRAIN_CLASS']
                          )
-            import time
-            time.sleep(10)
+            passenger_details(driver,
+                              user['PASSENGER_NAME'],
+                              user['PASSENGER_AGE'],
+                              user['PASSENGER_GENDER'],
+                              user['PASSENGER_BERTH_CHOICE'],
+                              user['PASSENGER_MOB_NO']
+                              )
+            review_journey(driver)
+            time.sleep(20)
         except SystemError as e:
             err = str(e)
 
